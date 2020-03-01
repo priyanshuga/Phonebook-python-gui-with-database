@@ -1,0 +1,40 @@
+[2/24, 21:10] Madhura: import string
+import tkinter
+from tkinter import *
+import sqlite3 as lite
+import sys
+import re
+con = lite.connect('Emails.db')
+c = con.cursor()
+temp=[]
+#create table
+c.execute('''CREATE TABLE IF NOT EXISTS students
+             (name text)''')
+infile = open("emailids.txt", 'r')
+lines = infile.readlines()
+for line in lines:
+    if re.match("^(.+?)\W", line): #Whether line begins with this
+        imtag = re.match("^(.+?)\W", line).group(0)
+        a=imtag.strip(",'Dr' 'Uber'")
+        temp.append(a)
+   
+print(temp)
+with con:
+    c=con.cursor()
+    for t1 in temp:
+        if t1 !='':
+            c.execute("INSERT INTO students VALUES(?)",(t1,))
+   
+
+#commit the changes to db
+
+#close the connection
+with con:
+    c=con.cursor()
+    c.execute("SELECT * FROM students")
+    rows=c.fetchall()
+    for row in rows:
+            print(row)
+
+con.close()
+[2/24, 21:11] Madhura: *disclaimer- This does not work, even ma'am tried it, if you got brains, toh pura Kar dena*😂
